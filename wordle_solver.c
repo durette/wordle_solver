@@ -36,10 +36,8 @@ void score_words();
 void show_character_histogram();
 void show_dictionary();
 bool de_is_greater(struct DictionaryEntry a, struct DictionaryEntry b);
-void swap_dictionary_entries(struct DictionaryEntry *a,
-                             struct DictionaryEntry *b);
-void heapify_dictionary_entries(struct DictionaryEntry arr[], long int n,
-                                long int i);
+void swap_dictionary_entries(struct DictionaryEntry *a, struct DictionaryEntry *b);
+void heapify_dictionary_entries(struct DictionaryEntry arr[], long int n, long int i);
 void sort_dictionary();
 void get_and_show_current_word();
 void get_test_result();
@@ -50,9 +48,8 @@ void filter_dictionary_by_black_result(unsigned long int black_letter_index);
 void filter_dictionary_by_orange_result(unsigned long int orange_letter_index);
 void filter_dictionary_by_missing_result();
 
-    struct DictionaryEntry current_word;
+struct DictionaryEntry current_word;
 struct DictionaryEntry test_result;
-
 unsigned long int dictionary_size = 0;
 unsigned long int character_histogram[256];
 bool won = false;
@@ -67,14 +64,12 @@ int main() {
       get_test_result();
       process_test_result();
       sort_dictionary();
-      // won = true;
    }
    return 0;
 }
 
 void load_dictionary() {
    FILE *file = fopen(DICT_FILE, "rb");
-   // int characters_for_word[WORDLE_SIZE];
    unsigned long int file_column_index = 0;
    unsigned long int dictionary_index = 0;
    bool file_line_contains_junk = false;
@@ -84,8 +79,7 @@ void load_dictionary() {
          if (file_line_contains_junk == false && file_column_index == WORDLE_SIZE) {
             ++dictionary_index;
          } else {
-            for (int letter_index = 0; letter_index < WORDLE_SIZE;
-                 ++letter_index) {
+            for (int letter_index = 0; letter_index < WORDLE_SIZE; ++letter_index) {
                dictionary[dictionary_index].spelling[letter_index] = 0;
             }
          }
@@ -202,14 +196,11 @@ void sort_dictionary() {
 }
 
 void get_and_show_current_word() {
-   current_word = dictionary[0];
    for (unsigned long int li = 0; li < WORDLE_SIZE; ++li) {
       current_word.spelling[li] = dictionary[0].spelling[li];
       printf("%c", current_word.spelling[li]);
    }
-   // printf(" score = %ld", current_word.score);
    printf("\n");
-   // printf("\ndictionary_size = %ld\n", dictionary_size);
 }
 
 void get_test_result() {
@@ -236,7 +227,10 @@ void process_test_result() {
       switch (test_result.spelling[li]) {
       case 'D':
       case 'd':
-         exit(0);
+      case 'W':
+      case 'w':
+         won = true;
+         break;
       case 'G':
       case 'g':
          filter_dictionary_by_green_result(li);
@@ -247,7 +241,7 @@ void process_test_result() {
          break;
       case 'O':
       case 'o':
-      case 'Y': // accept yellow too
+      case 'Y':
       case 'y':
          filter_dictionary_by_orange_result(li);
          break;
