@@ -282,11 +282,14 @@ void filter_dictionary_by_orange_result(unsigned long int orange_letter_index) {
    for (unsigned long int di = 0; di < dictionary_size; ++di) {
       if (dictionary[di].spelling[orange_letter_index] == current_word.spelling[orange_letter_index]) {
          dictionary[di].score = 0;
-      }
-   }
-   for (unsigned long int di = 0; di < dictionary_size; ++di) {
-      for (unsigned long int li = 0; li < WORDLE_SIZE; ++li) {
-         if (li == orange_letter_index && dictionary[di].spelling[li] == current_word.spelling[orange_letter_index]) {
+      } else {
+         bool orange_letter_found = false;
+         for (unsigned long int li = 0; li < WORDLE_SIZE; ++li) {
+            if (dictionary[di].spelling[li] == current_word.spelling[orange_letter_index]) {
+               orange_letter_found = true;
+            }
+         }
+         if (orange_letter_found == false) {
             dictionary[di].score = 0;
          }
       }
